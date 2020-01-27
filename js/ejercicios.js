@@ -1,13 +1,21 @@
 
 function create_squares(){
-    var squares = []
-    var letters = ['a', 'b', 'c', 'd', 'e', 'f','g']
-    var numbers = ['1','2','3','4','5', '6', '7', '8']
+    var squares = [];
+    var letters = ['a', 'b', 'c', 'd', 'e', 'f','g'];
+    var numbers = ['1','2','3','4','5', '6', '7', '8'];
+
     for (i=0; i<8; i++){
         for (j=0; j<8; j++){
-            sq = i+j
+            var sq = letters[i]+numbers[j];
+            if ((i+j)%2 == 0){
+                var col = 'dark';
+            }
+            else{
+                var col = 'light';
+            }
+            var obj = {square: sq, color: col}
         }
-        squares.push(sq)
+        squares.push(obj)
     }
     return squares
 }
