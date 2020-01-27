@@ -1,4 +1,4 @@
-//definir piezas
+//define pieces as objects
 var wR = {type: 'r', color:'w'}
 var wB = {type:'b', color:'w'}
 var wK = {type:'k', color:'w'}
@@ -27,23 +27,6 @@ for (i = 0; i < 8; i++) {
     allPieces.push(wP)
     allPieces.push(bP)
 }
-
-/*now irrelevant
-//define number of available pieces
-var wRnum = {num: 2}
-var wBnum = {num: 2}
-var wKnum = {num: 1}
-var wNnum = {num: 2}
-var wQnum = {num: 1}
-var wPnum = {num: 8}
-
-var bRnum = {num: 2}
-var bBnum = {num: 2}
-var bKnum = {num: 1}
-var bNnum = {num: 2}
-var bQnum = {num: 1}
-var bPnum = {num: 8}
-*/
 
 
 //define number of available squares
