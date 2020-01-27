@@ -13,34 +13,33 @@ function create_squares(){
             else{
                 var col = 'light';
             }
-            var obj = {square: sq, color: col}
+            var obj = {square: sq, color: col};
         }
-        squares.push(obj)
+        squares.push(obj);
     }
     return squares
 }
 function full_squares(){
-    var squares = create_squares()
-    var full_squares = []
+    var squares = create_squares();
+    var full_squares = [];
     for (i=0; i<64; i++){
-        if (chess.get(squares[i]) != null){
-            full_squares.push(squares[i])
+        if (chess.get(squares[i].square) != null){
+            full_squares.push(squares[i]);
         }
     }
     return full_squares
 }
 var full_squares = full_squares()
-
 function fila_y_columna(){
-    var letras = []
-    var numeros = []
+    var letras = [];
+    var numeros = [];
 
     for (i=0; i<8; i++){ 
-        letter = full_squares[i].slice(0,1)
-        number = full_squares[i].slice(1,2)
+        letter = full_squares[i].square.slice(0,1);
+        number = full_squares[i].square.slice(1,2);
         if (!letras.includes(letter) & !numeros.includes(number)){ // checks that each letter and number is unique
-            letras.push(letter)
-            numeros.push(number)
+            letras.push(letter);
+            numeros.push(number);
         }
         else{
             return false
@@ -49,8 +48,8 @@ function fila_y_columna(){
     }
 }
 function diagonal(){
-    lights = []
-    darks = []
+    lights = [];
+    darks = [];
     for (i=0; i<8; i++){
         if 
     }
