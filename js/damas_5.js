@@ -1,6 +1,8 @@
 var Chess = require('./chess').Chess;
 
-rnd_start = rnd_fen(5 damas) // waiting for rnd_fen method that can pass in 5 damas
+pieces = [wQ, wQ, wQ, wQ, wQ];
+squares = create_squares();
+rnd_start = randomPositions(pieces, squares);
 var chess = new Chess(rnd_start);
 chess.ascii(); // show board
 

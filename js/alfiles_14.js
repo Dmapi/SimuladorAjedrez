@@ -1,8 +1,8 @@
 var Chess = require('./chess').Chess;
 
-pieces = [wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB]
-squares = create_squares()
-rnd_start = randomPositions(pieces, squares)
+pieces = [wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB];
+squares = create_squares();
+rnd_start = randomPositions(pieces, squares);
 var chess = new Chess(rnd_start);
 chess.ascii(); // show board
 

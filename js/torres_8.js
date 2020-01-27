@@ -1,6 +1,8 @@
 var Chess = require('./chess').Chess;
 
-rnd_start = rnd_fen(8 torres) // waiting for rnd_fen method that can pass in 8 torres
+pieces = [wR, wR, wR, wR, wR, wR, wR, wR];
+squares = create_squares();
+rnd_start = randomPositions(pieces, squares);
 var chess = new Chess(rnd_start);
 chess.ascii(); // show board
 
