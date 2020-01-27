@@ -48,9 +48,5 @@ function fila_y_columna(){
     }
 }
 function diagonal(){
-    lights = [];
-    darks = [];
-    for (i=0; i<8; i++){
-        if 
-    }
+    //
 }
