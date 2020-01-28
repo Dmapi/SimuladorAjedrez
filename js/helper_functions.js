@@ -83,6 +83,9 @@ function randomPositions(pieces, squares) { //place pieces with random squares a
 var full_squares = full_squares()
 var num_squares = full_squares.length
 
+/* edit below to pass in create squares, full squares?
+  other option: make one script for all exercises so that they all inherit above variables
+*/
 function fila_y_columna(){ // to check if all pieces are on different rows and columns
     var letras = [];
     var numeros = [];
