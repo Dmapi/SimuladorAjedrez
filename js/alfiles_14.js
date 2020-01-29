@@ -1,7 +1,11 @@
+/*TODO:
+define legal moves
+add chessboard
+*/
 
 var pieces = [wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB, wB];
 var squares = create_squares();
-var rnd_start = randomPositions(pieces, squares);
+var rnd_start = randomPositions(pieces, squares, manyBishops = true);
 
 var Chess = require('./chess').Chess; 
 var chess = new Chess(rnd_start);

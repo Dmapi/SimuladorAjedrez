@@ -63,7 +63,7 @@ function full_squares(){ // returns squares with pieces on them
 }
 
 
-function randomPositions(pieces, squares) { //place pieces with random squares and pieces
+function randomPositions(pieces, squares, manyBishops = false) { //place pieces with random squares and pieces
     positionsArray = []
     for (i = 0; i < pieces.length; i++) {
         // find random piece and square by index
