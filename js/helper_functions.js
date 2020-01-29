@@ -48,6 +48,7 @@ function allPieceStrings() {
     }
     return pieces
 }
+console.log(allPieceStrings())
 
 var letters = ['a', 'b', 'c', 'd', 'e', 'f','g','h'];
 var numbers = ['1','2','3','4','5', '6', '7', '8'];
@@ -96,7 +97,7 @@ function randomPositions(pieces,squares) { //place pieces with random squares an
     
     //place bishops of same color on opposite colored tiles
     var numWBishops = getOccurrence(pieces, 'wB') 
-    var numBBishops = getOccurrence(pieces, 'bB') 
+    var numBBishops = getOccurrence(piees, 'bB') 
     var squareIndex = Math.floor(Math.random() * squares.length)
 
     //assign wB to tiles alternating light and dark
@@ -114,6 +115,9 @@ function randomPositions(pieces,squares) { //place pieces with random squares an
         }  
         propertySquares.push(squares[squareIndex]) //add square
         valuePieces.push(pieces[bishopIndex]) //add bishop
+
+        squares.splice(squareIndex,1)
+        pieces.splice(bishopIndex, 1)
     }
 
     //assign bB to tiles alternating light and dark
@@ -133,16 +137,23 @@ function randomPositions(pieces,squares) { //place pieces with random squares an
         }
         propertySquares.push(squares[squareIndex]) //add square
         valuePieces.push(pieces[bishopIndex]) //add bishop
+
+        squares.splice(squareIndex,1)
+        pieces.splice(bishopIndex, 1)
     }
     
     //place remaining non-bishop pieces
     for (i = 0; i < pieces.length; i++) {
+        console.log(pieces)
         // find random piece and square by index
         var pieceIndex = Math.floor(Math.random() * pieces.length)
         var squareIndex = Math.floor(Math.random() * squares.length)
 
         propertySquares.push(squares[squareIndex]) //add square
         valuePieces.push(pieces[pieceIndex]) //add piece
+
+        squares.splice(squareIndex,1)
+        pieces.splice(pieceIndex, 1)
     }
 
     //place square and piece pairs as properties and values in position object
@@ -150,13 +161,11 @@ function randomPositions(pieces,squares) { //place pieces with random squares an
     for (i = 0; i < propertySquares.length; i ++) {
         var coords = propertySquares[i].square //problem here: why isn't it read?
         var piece = valuePieces[i]
-        console.log(coords, piece)
         positions[coords]= piece
     }
     return positions
 }
 
-console.log(randomPositions(allPieceStrings(), create_squares()))
 
 var full_squares = full_squares()
 var num_squares = full_squares.length
