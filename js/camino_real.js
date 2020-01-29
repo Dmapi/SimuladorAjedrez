@@ -12,3 +12,5 @@ while (!game_over()){
     // play versus player or computer
     // each turn, moves_left -= 1
 }
+
+// how to code that exercise is not done until several unique paths found?
