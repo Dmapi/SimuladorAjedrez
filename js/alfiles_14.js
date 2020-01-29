@@ -9,6 +9,7 @@ var rnd_start = randomPositions(pieces, squares, manyBishops = true);
 
 var Chess = require('./chess').Chess; 
 var chess = new Chess(rnd_start);
+var board = Chessboard('myBoard')
 
 function alfiles14OnDrop (source, target, piece, newPos, oldPos) {
     
