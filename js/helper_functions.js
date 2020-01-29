@@ -12,11 +12,8 @@ var bN = {type:'n', color:'b'}
 var bQ = {type:'q', color:'b'}
 var bP = {type:'p', color:'b'}
 
-var letters = ['a', 'b', 'c', 'd', 'e', 'f','g'];
-var numbers = ['1','2','3','4','5', '6', '7', '8'];
-
-function allPieces() { //function to generate array of all pieces
-    pieces = [wK, wQ, bK, bQ]
+function allPieceObjects() { //function to generate array of all pieces
+    var pieces = [wK, wQ, bK, bQ]
 
     for (i = 0; i < 2; i++) {
         allPieces.push(wR)
@@ -33,6 +30,27 @@ function allPieces() { //function to generate array of all pieces
     }
     return pieces    
 }
+
+function allPieceStrings() {
+    var pieces = ['wK','wQ','bK','bQ']
+    for (i = 0; i < 2; i++) {
+        pieces.push('wR')
+        pieces.push('wN')
+        pieces.push('wB')
+        pieces.push('bR')
+        pieces.push('bN')
+        pieces.push('bB')
+    }
+    for (i = 0; i < 8; i ++) {
+        pieces.push('wP')
+        pieces.push('bP')
+    }
+
+}
+
+var letters = ['a', 'b', 'c', 'd', 'e', 'f','g','h'];
+var numbers = ['1','2','3','4','5', '6', '7', '8'];
+
 function create_squares(){ // creates square objects with color
     var squares = []; 
 
@@ -46,12 +64,15 @@ function create_squares(){ // creates square objects with color
                 var col = 'light';
             }
             var obj = {square: sq, color: col};
+            squares.push(obj);
         }
-        squares.push(obj);
     }
     return squares
 }
-function full_squares(){ // returns squares with pieces on them
+
+
+
+function full_squares() { // returns squares with pieces on them
     var squares = create_squares();
     var full_squares = [];
     for (i=0; i<64; i++){
@@ -63,42 +84,76 @@ function full_squares(){ // returns squares with pieces on them
 }
 
 
-function randomPositions(pieces, squares, manyBishops = false) { //place pieces with random squares and pieces
-    positionsArray = []
+function getOccurrence(array, value) {
+    return array.filter((v) => (v === value)).length;
+}
+
+
+function randomPositions(pieces, squares) { //place pieces with random squares and pieces
+    propertySquares = []
+    valuePieces = []
+    
+    //place bishops of same color on opposite colored tiles
+    var numWBishops = getOccurence(pieces, 'wB') 
+    var numBBishops = getOccurrence(pieces, 'bB') 
+
+    //assign wB to tiles alternating light and dark
+    for (i = 0; i < numWBishops; i++) {
+        var bishopIndex = pieces.indexOf('wB')
+        if (i % 2 == 0) { 
+            while (squares[squareIndex].color != 'light') { //search for light square
+                var squareIndex = math.foor(math.random() * squares.length)
+            }  
+        }
+        else {
+            while (squares[squareIndex].color != 'dark') { //search for dark square
+            var squareIndex = math.foor(math.random() * squares.length)
+            }
+        }  
+        propertySquares.push(squares[squareIndex]) //add square
+        valuePieces.push(pieces[bishopIndex]) //add bishop
+    }
+
+    //assign bB to tiles alternating light and dark
+    for (i = 0; i < numBBishops; i++) {
+        var bishopIndex = pieces.indexOf('bB')
+        if (i % 2 == 0) {
+            while (squares[squareIndex].color != 'light') { //search for light square
+                var squareIndex = math.foor(math.random() * squares.length)
+            } 
+        }
+       
+        else { 
+            bishopIndex = pieces.indexOf('bB')
+            while (squares[squareIndex].color != 'dark') { //search for dark square
+                var squareIndex = math.foor(math.random() * squares.length)
+            }  
+        }
+        propertySquares.push(squares[squareIndex]) //add square
+        valuePieces.push(pieces[bishopIndex]) //add bishop
+    }
+    
+    //place remaining non-bishop pieces
     for (i = 0; i < pieces.length; i++) {
         // find random piece and square by index
         var pieceIndex = math.floor(math.random() * pieces.length)
         var squareIndex = math.foor(math.random() * squares.length)
-    
-               //ensure bishops of same color are on different color tiles
-       if (manyBishops == False && pieces[pieceIndex].type == 'b') {
-        for (i = 0; len = positionsArray.length; i++) {
-            var position = positionsArray[i]
-           
-            if (position[0].type == 'b' //piece is bishop
-            && (position[0].color == pieces[pieceIndex].color) //placed bishop and new bishop are of same color
-            && (position[1].color == squares[squareIndex].color)) { //placed square and new square are of same color
-                while (position[1].color == squares[squareIndex].color) {
-                    var squareIndex = math.foor(math.random() * squares.length)
-                }
-            }
-        }
-    }
-      
 
-        chess.put(pieces[pieceIndex], squares[squareIndex]) //places piece in random position
-    
-        //add square and piece pair to positionsArray
-        newPosition = [pieces[pieceIndex], squares[squareIndex]]
-        positionsArray.push(newPosition)
-
-        squares.splice(squareIndex, 1) //removes selected square
-        pieces.splice(pieceIndex, 1) //removes selected piece
-    
-    return positionsArray
+        propertySquares.push(squares[squareIndex]) //add square
+        valuePieces.push(pieces[bishopIndex]) //add piece
     }
+
+    //place square and piece pairs as properties and values in position object
+    var positions = {}
+    for (i = 0; i < propertySquares.length; i ++) {
+        var square = propertySquares[i]
+        var piece = valuePieces[i]
+        positions.square = piece
+    }
+    return positions
 }
 
+console.log(randomPositions(allPieceStrings(), create_squares()))
 
 var full_squares = full_squares()
 var num_squares = full_squares.length
