@@ -61,6 +61,8 @@ function full_squares(){ // returns squares with pieces on them
     }
     return full_squares
 }
+
+
 function randomPositions(pieces, squares) { //place pieces with random squares and pieces
     positionsArray = []
     for (i = 0; i < pieces.length; i++) {
@@ -68,6 +70,22 @@ function randomPositions(pieces, squares) { //place pieces with random squares a
         var pieceIndex = math.floor(math.random() * pieces.length)
         var squareIndex = math.foor(math.random() * squares.length)
     
+               //ensure bishops of same color are on different color tiles
+       if (manyBishops == False && pieces[pieceIndex].type == 'b') {
+        for (i = 0; len = positionsArray.length; i++) {
+            var position = positionsArray[i]
+           
+            if (position[0].type == 'b' //piece is bishop
+            && (position[0].color == pieces[pieceIndex].color) //placed bishop and new bishop are of same color
+            && (position[1].color == squares[squareIndex].color)) { //placed square and new square are of same color
+                while (position[1].color == squares[squareIndex].color) {
+                    var squareIndex = math.foor(math.random() * squares.length)
+                }
+            }
+        }
+    }
+      
+
         chess.put(pieces[pieceIndex], squares[squareIndex]) //places piece in random position
     
         //add square and piece pair to positionsArray
@@ -80,6 +98,8 @@ function randomPositions(pieces, squares) { //place pieces with random squares a
     return positionsArray
     }
 }
+
+
 var full_squares = full_squares()
 var num_squares = full_squares.length
 
