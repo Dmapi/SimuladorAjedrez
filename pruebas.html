@@ -1,15 +1,523 @@
 <!doctype html>
 <html>
-    <div id="myBoard" style="width: 400px"></div>
 <head>
-    <!-- <title>Script Src Attribute Example</title> -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <link rel='icon' href='img/favicon.ico' type='image/x-icon'/ >
+  <title>Ajedrez Pilares</title>
+  <base href="../" />
+  <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
+  <style>
+  audio{
+    visibility: hidden;
+  }
+</style>
 </head>
-
 <body>
- <script> 
- var board = Chessboard('myBoard');
- // src= "./js/alfiles_14.js"
+
+  <!--- Begin Example HTML ------------------------------------------------------>
+  <div id="myBoard" style="width: 400px"></div>
+  <label>Status:</label>
+  <div id="status"></div>
+  <label>FEN:</label>
+  <div id="fen"></div>
+  <label>PGN:</label>
+  <div id="pgn"></div>
+  <div id="audioBox">
+    <audio controls preload="auto" id="audioMove"><source src="sound/dropPiece.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioCheck"><source src="sound/check.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioCapture"><source src="sound/capturePiece.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioCastling"><source src="sound/castling.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioMate"><source src="sound/mate.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioJaque"><source src="sound/jaque.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioDe"><source src="sound/de.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioE"><source src="sound/e.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audio1"><source src="sound/1.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audio2"><source src="sound/2.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audio3"><source src="sound/3.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audio4"><source src="sound/4.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audio5"><source src="sound/5.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audio6"><source src="sound/6.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audio7"><source src="sound/7.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audio8"><source src="sound/8.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioA"><source src="sound/a.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioB"><source src="sound/b.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioC"><source src="sound/c.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioD"><source src="sound/d.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioE"><source src="sound/e.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioF"><source src="sound/f.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioG"><source src="sound/g.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioH"><source src="sound/h.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls preload="none" id="audioX"><source src="sound/x.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+  <div id="audioInvidentes">
+  </div>
+
+  <!--- End Example HTML -------------------------------------------------------->
+
+  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js" integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js" integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
+  <script>
+// --- Begin Example JS --------------------------------------------------------
+// NOTE: this example uses the chess.js library:
+// https://github.com/jhlywa/chess.js
+
+var board = null
+var game = new Chess()
+var $status = $('#status')
+var $fen = $('#fen')
+var $pgn = $('#pgn')
+var whiteSquareGrey = '#a9a9a9'
+var blackSquareGrey = '#696969'
+
+function removeGreySquares () 
+{
+  $('#myBoard .square-55d63').css('background', '')
+}
+
+function greySquare (square) 
+{
+  var $square = $('#myBoard .square-' + square)
+
+  var background = whiteSquareGrey
+  if ($square.hasClass('black-3c85d')) 
+  {
+    background = blackSquareGrey
+  }
+
+  $square.css('background', background)
+}
+
+function onDragStart (source, piece) 
+{
+  // do not pick up pieces if the game is over
+  if (game.game_over()) 
+  {
+    return false
+  }
+
+  // or if it's not that side's turn
+  if ((game.turn() === 'w' && piece.search(/^b/) !== -1) || (game.turn() === 'b' && piece.search(/^w/) !== -1)) 
+  {
+    return false
+  }
+}
+
+var last =  function(array, n) 
+{
+  if (array == null) 
+    return void 0;
+  if (n == null) 
+   return array[array.length - 1];
+ return array.slice(Math.max(array.length - n, 0));  
+};
+
+function onDrop (source, target) {
+  removeGreySquares()
+
+  // see if the move is legal
+  var move = game.move({
+    from: source,
+    to: target,
+    promotion: 'q' // NOTE: always promote to a queen for example simplicity
+  })
+
+  // illegal move
+  if (move === null) return 'snapback'
+
+    updateStatus()    
+}
+
+function updateStatus ()
+{
+  var audioCheck= document.getElementById("audioCheck");
+  var audioMove=document.getElementById("audioMove");
+  var audioCapture=document.getElementById("audioCapture");
+  var audioCastling=document.getElementById("audioCastling");
+  var audioMate=document.getElementById("audioMate");
+  var audioJaque=document.getElementById("audioJaque");
+  var audioDe=document.getElementById("audioDe");
+  var audioA=document.getElementById("audioA");
+  var audioFila;
+  var audioColumna;
+  var audioColumna2;
+  var audioPor;
+  var status = ''
+  var flagInvidente=1;
+
+  var moveColor = 'White'
+  board.orientation('white')
+  if (game.turn() === 'b') 
+  {
+    //board.orientation('black')
+    moveColor = 'Black'
+  }
+
+  // checkmate?
+  if (game.in_checkmate()) 
+  {
+    status = 'Game over, ' + moveColor + ' is in checkmate.'
+    audioCheck.play();
+    setTimeout(function()
+    { 
+      audioMate.play(); 
+    }, 100)
+  }
+
+  // draw?
+  else if (game.in_draw()) 
+  {
+    status = 'Game over, drawn position'
+    audioMove.play();
+  }
+
+  // game still on
+  else 
+  {
+    status = moveColor + ' to move'
+    // check?
+    if (game.in_check()) 
+    {
+      var newPgn= game.pgn().slice(-4, -1);
+      status += ', ' + moveColor + ' is in check'
+      audioCheck.play(); 
+      if(isNaN(newPgn[0]) )
+      {
+        if(newPgn[0] == '.' || newPgn[0] == 'O')
+        {
+          audioMove.play();
+          if(flagInvidente==1)
+          {
+            $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/"+newPgn[2]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+            audioFila=document.getElementById("audio"+newPgn[3]);
+            setTimeout(function()
+            { 
+              audioFila.play(); 
+            }, 500)
+          }
+        }
+        else
+        {
+          if(newPgn[0] == '-')
+          {
+            audioCastling.play(); 
+            $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/enroqueL.mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+          }
+          else
+          {
+
+            if(newPgn[0]=='x')
+            {
+              audioCapture.play();
+              newPgn= last(game.pgn(),5);
+              if (newPgn[0] == newPgn[0].toUpperCase()) 
+              {
+                $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/piezas/"+newPgn[0]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>"); 
+              }
+              else
+              {
+                $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/"+newPgn[0]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>"); 
+              } 
+              audioPor=document.getElementById("audio"+newPgn[1].toUpperCase());
+              audioColumna=document.getElementById("audio"+newPgn[2].toUpperCase());
+              audioFila=document.getElementById("audio"+newPgn[3]);
+              setTimeout(function()
+              { 
+                audioPor.play(); 
+              }, 500)
+              setTimeout(function()
+              { 
+                audioColumna.play(); 
+              }, 1000)
+              setTimeout(function()
+              { 
+                audioFila.play(); 
+              }, 1500)
+            }
+            else
+            {
+              if(newPgn[0]=='+')
+              {
+                audioMove.play();
+                if(flagInvidente==1)
+                {
+                  $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/"+newPgn[2]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+                  audioFila=document.getElementById("audio"+newPgn[3]);
+                  setTimeout(function()
+                  { 
+                    audioFila.play(); 
+                  }, 500)
+                }
+              }
+              else
+              {
+                audioMove.play();
+                $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/piezas/"+newPgn[0]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+                audioColumna=document.getElementById("audio"+newPgn[1].toUpperCase());
+                setTimeout(function()
+                { 
+                  audioColumna.play(); 
+                }, 800)
+                audioFila=document.getElementById("audio"+newPgn[2]);
+                setTimeout(function()
+                { 
+                  audioFila.play(); 
+                }, 1300)
+              }
+            }
+          }
+        }
+      }
+      setTimeout(function()
+      { 
+        audioJaque.play(); 
+      }, 2000)
+    }
+    else
+    {
+      var newPgn= last(game.pgn(),4)
+      console.log(newPgn);
+      if(isNaN(newPgn[0]) )
+      {
+        if(newPgn[0] == '.' || newPgn[0] == 'O')
+        {
+          audioMove.play();
+          if(flagInvidente==1)
+          {
+            $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/"+newPgn[2]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+            audioFila=document.getElementById("audio"+newPgn[3]);
+            setTimeout(function()
+            { 
+              audioFila.play(); 
+            }, 500)
+          }
+        }
+        else
+        {
+          if(newPgn[0] == '-')
+          {
+            audioCastling.play(); 
+            $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/enroqueL.mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+          }
+          else
+          {
+            if(newPgn[1]=='x')
+            {
+              audioCapture.play();
+              if (newPgn[0] == newPgn[0].toUpperCase()) 
+              {
+                $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/piezas/"+newPgn[0]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");  
+              }
+              else
+              {
+                $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/"+newPgn[0]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>"); 
+              } 
+              audioPor=document.getElementById("audio"+newPgn[1].toUpperCase());
+              audioColumna=document.getElementById("audio"+newPgn[2].toUpperCase());
+              audioFila=document.getElementById("audio"+newPgn[3]);
+              setTimeout(function()
+              { 
+                audioPor.play(); 
+              }, 500)
+              setTimeout(function()
+              { 
+                audioColumna.play(); 
+              }, 1000)
+              setTimeout(function()
+              { 
+                audioFila.play(); 
+              }, 1500)
+            }
+            else
+            {
+              if(newPgn[0]=='+')
+              {
+                audioMove.play();
+                if(flagInvidente==1)
+                {
+                  $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/"+newPgn[2]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+                  audioFila=document.getElementById("audio"+newPgn[3]);
+                  setTimeout(function()
+                  { 
+                    audioFila.play(); 
+                  }, 500)
+                }
+              }
+              else
+              {
+                if(newPgn[0]=='R' || newPgn[0]=='C')
+                {
+                  audioMove.play();
+                  console.log("Entro");
+                  $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/piezas/"+newPgn[0]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+                  setTimeout(function()
+                  { 
+                    audioDe.play(); 
+                  }, 500)
+                  audioColumna=document.getElementById("audio"+newPgn[1].toUpperCase());
+                  setTimeout(function()
+                  { 
+                    audioColumna.play(); 
+                  }, 1000)
+                  setTimeout(function()
+                  { 
+                    audioA.play(); 
+                  }, 1500)
+                  audioColumna2=document.getElementById("audio"+newPgn[2].toUpperCase());
+                  setTimeout(function()
+                  { 
+                    audioColumna2.play(); 
+                  },2000)
+                  audioFila=document.getElementById("audio"+newPgn[3].toUpperCase());
+                  setTimeout(function()
+                  { 
+                    audioFila.play(); 
+                  }, 2500)
+                }
+                else
+                {
+                  audioMove.play();
+                  $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/piezas/"+newPgn[1]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+                  audioColumna=document.getElementById("audio"+newPgn[2].toUpperCase());
+                  setTimeout(function()
+                  { 
+                    audioColumna.play(); 
+                  }, 800)
+                  audioFila=document.getElementById("audio"+newPgn[3]);
+                  setTimeout(function()
+                  { 
+                    audioFila.play(); 
+                  }, 1300)
+                }
+              }
+            }
+          }
+        }
+      }
+      else
+      {
+        if(newPgn[0] == ' ')
+        {
+          if(newPgn[1] == 'O')
+          {
+            audioCastling.play();
+            if(flagInvidente==1)
+            {
+              $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/enroqueC.mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+            }
+          }
+          else
+          {
+            audioMove.play();
+            if(flagInvidente==1)
+            {
+              $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/piezas/"+newPgn[1]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+              audioColumna=document.getElementById("audio"+newPgn[2].toUpperCase());
+              setTimeout(function()
+              { 
+                audioColumna.play(); 
+              }, 800)
+              audioFila=document.getElementById("audio"+newPgn[3]);
+              setTimeout(function()
+              { 
+                audioFila.play(); 
+              }, 1300)
+            }
+          }
+        }
+        //If it's a number or dot, then it´s a peon.
+        else
+        {
+          audioMove.play();
+          if(flagInvidente==1)
+          {
+            $("#audioInvidentes").append("<audio controls autoplay><source src=\"sound/"+newPgn[2]+".mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio>");
+            audioFila=document.getElementById("audio"+newPgn[3]);
+            setTimeout(function()
+            { 
+              audioFila.play(); 
+            }, 500)
+          }
+        }
+      }
+    }
+  }
+  $status.html(status)
+  $fen.html(game.fen())
+  $pgn.html(game.pgn())
+}
+function onMouseoverSquare (square, piece) 
+{
+  // get list of possible moves for this square
+  var moves = game.moves({
+    square: square,
+    verbose: true
+  })
+
+  // exit if there are no moves available for this square
+  if (moves.length === 0) 
+  {
+    return
+  }
+
+  // highlight the square they moused over
+  greySquare(square)
+
+  // highlight the possible squares for this piece
+  for (var i = 0; i < moves.length; i++) 
+  {
+    greySquare(moves[i].to)
+  }
+}
+
+function onMouseoutSquare (square, piece) 
+{
+  removeGreySquares()
+}
+
+function onSnapEnd () 
+{
+  board.position(game.fen())
+}
+
+var config = {
+  draggable: true,
+  position: 'start',
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onMouseoutSquare: onMouseoutSquare,
+  onMouseoverSquare: onMouseoverSquare,
+  onSnapEnd: onSnapEnd
+}
+var board = Chessboard('myBoard', config)
+//board = Chessboard('myBoard', 'start')
+// --- End Example JS ----------------------------------------------------------
 </script>
 </body>
-
 </html>
