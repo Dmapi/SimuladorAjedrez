@@ -1,6 +1,6 @@
-pieces = [wQ, wQ, wQ, wQ, wQ, wQ, wQ, wQ];
-squares = create_squares();
-rnd_start = randomPositions(pieces, squares);
+var pieces = [wQ, wQ, wQ, wQ, wQ, wQ, wQ, wQ];
+var squares = create_squares();
+var rnd_start = randomPositions(pieces, squares);
 
 var Chess = require('./chess').Chess;
 var chess = new Chess(rnd_start);
