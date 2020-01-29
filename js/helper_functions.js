@@ -123,7 +123,7 @@ function randomPositions(pieces, squares) { //place pieces with random squares a
             } 
         }
        
-        else if (pieces.includes('bB') && (i % 2 !== 0)) { 
+        else { 
             bishopIndex = pieces.indexOf('bB')
             while (squares[squareIndex].color != 'dark') { //search for dark square
                 var squareIndex = math.foor(math.random() * squares.length)
@@ -150,7 +150,7 @@ function randomPositions(pieces, squares) { //place pieces with random squares a
         var piece = valuePieces[i]
         positions.square = piece
     }
-    return position
+    return positions
 }
 
 console.log(randomPositions(allPieceStrings(), create_squares()))
