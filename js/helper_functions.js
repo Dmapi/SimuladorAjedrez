@@ -90,7 +90,7 @@ function getOccurrence(array, value) {
 }
 
 
-function randomPositions(pieces, squares) { //place pieces with random squares and pieces
+function randomPositions(pieces,squares) { //place pieces with random squares and pieces
     propertySquares = []
     valuePieces = []
     
