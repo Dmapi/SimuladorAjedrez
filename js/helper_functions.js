@@ -1,18 +1,19 @@
-//define pieces as objects
-var wR = {type: 'r', color:'w'}
-var wB = {type:'b', color:'w'}
-var wK = {type:'k', color:'w'}
-var wN = {type:'n', color:'w'}
-var wQ = {type:'q', color:'w'}
-var wP = {type:'p', color:'w'}
-var bR = {type:'r', color:'b'}
-var bB = {type:'b',color:'b'}
-var bK = {type:'k', color:'b'}
-var bN = {type:'n', color:'b'}
-var bQ = {type:'q', color:'b'}
-var bP = {type:'p', color:'b'}
 
 function allPieceObjects() { //function to generate array of all pieces
+    //define pieces as objects
+    var wR = {type: 'r', color:'w'}
+    var wB = {type:'b', color:'w'}
+    var wK = {type:'k', color:'w'}
+    var wN = {type:'n', color:'w'}
+    var wQ = {type:'q', color:'w'}
+    var wP = {type:'p', color:'w'}
+    var bR = {type:'r', color:'b'}
+    var bB = {type:'b',color:'b'}
+    var bK = {type:'k', color:'b'}
+    var bN = {type:'n', color:'b'}
+    var bQ = {type:'q', color:'b'}
+    var bP = {type:'p', color:'b'}
+
     var pieces = [wK, wQ, bK, bQ]
 
     for (i = 0; i < 2; i++) {
@@ -45,7 +46,7 @@ function allPieceStrings() {
         pieces.push('wP')
         pieces.push('bP')
     }
-
+    return pieces
 }
 
 var letters = ['a', 'b', 'c', 'd', 'e', 'f','g','h'];
@@ -94,20 +95,21 @@ function randomPositions(pieces, squares) { //place pieces with random squares a
     valuePieces = []
     
     //place bishops of same color on opposite colored tiles
-    var numWBishops = getOccurence(pieces, 'wB') 
+    var numWBishops = getOccurrence(pieces, 'wB') 
     var numBBishops = getOccurrence(pieces, 'bB') 
+    var squareIndex = Math.floor(Math.random() * squares.length)
 
     //assign wB to tiles alternating light and dark
-    for (i = 0; i < numWBishops; i++) {
+    for (i = 0; i < numWBishops; i++) { //question: does a value of 0 for second param work?
         var bishopIndex = pieces.indexOf('wB')
         if (i % 2 == 0) { 
             while (squares[squareIndex].color != 'light') { //search for light square
-                var squareIndex = math.foor(math.random() * squares.length)
+                var squareIndex = Math.floor(Math.random() * squares.length)
             }  
         }
         else {
             while (squares[squareIndex].color != 'dark') { //search for dark square
-            var squareIndex = math.foor(math.random() * squares.length)
+            var squareIndex = Math.floor(Math.random() * squares.length)
             }
         }  
         propertySquares.push(squares[squareIndex]) //add square
@@ -119,14 +121,14 @@ function randomPositions(pieces, squares) { //place pieces with random squares a
         var bishopIndex = pieces.indexOf('bB')
         if (i % 2 == 0) {
             while (squares[squareIndex].color != 'light') { //search for light square
-                var squareIndex = math.foor(math.random() * squares.length)
+                var squareIndex = Math.floor(Math.random() * squares.length)
             } 
         }
        
         else { 
             bishopIndex = pieces.indexOf('bB')
             while (squares[squareIndex].color != 'dark') { //search for dark square
-                var squareIndex = math.foor(math.random() * squares.length)
+                var squareIndex = Math.floor(Math.random() * squares.length)
             }  
         }
         propertySquares.push(squares[squareIndex]) //add square
@@ -136,19 +138,20 @@ function randomPositions(pieces, squares) { //place pieces with random squares a
     //place remaining non-bishop pieces
     for (i = 0; i < pieces.length; i++) {
         // find random piece and square by index
-        var pieceIndex = math.floor(math.random() * pieces.length)
-        var squareIndex = math.foor(math.random() * squares.length)
+        var pieceIndex = Math.floor(Math.random() * pieces.length)
+        var squareIndex = Math.floor(Math.random() * squares.length)
 
         propertySquares.push(squares[squareIndex]) //add square
-        valuePieces.push(pieces[bishopIndex]) //add piece
+        valuePieces.push(pieces[pieceIndex]) //add piece
     }
 
     //place square and piece pairs as properties and values in position object
-    var positions = {}
+    var positions = new Object;
     for (i = 0; i < propertySquares.length; i ++) {
-        var square = propertySquares[i]
+        var coords = propertySquares[i].square //problem here: why isn't it read?
         var piece = valuePieces[i]
-        positions.square = piece
+        console.log(coords, piece)
+        positions[coords]= piece
     }
     return positions
 }
@@ -187,7 +190,7 @@ function diag_check(sqs, len){ //helper function for diagonal()
             var letra_2 = sqs[j].square.slice(0,1);
             var l_a_num_2 = letters.indexOf(letra_2) + 1 //convierte letra a numero
             var numero_2 = sqs[j].square.slice(1,2);
-            if (Math.abs(l_a_num_2 - l_a_num) == Math.abs(numero_2 - numero){
+            if (Math.abs(l_a_num_2 - l_a_num) == Math.abs(numero_2 - numero)) {
                 return false
             }
         }
