@@ -51,7 +51,7 @@ function create_squares(){ // creates square objects with color
     }
     return squares
 }
-function full_squares(){ // returns squares with pieces on them
+function full_squares() { // returns squares with pieces on them
     var squares = create_squares();
     var full_squares = [];
     for (i=0; i<64; i++){
