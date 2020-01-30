@@ -1,0 +1,49 @@
+body{
+	background-image: linear-gradient(to bottom, #33ff, #cf7693);
+}
+
+.card{
+ 	margin-bottom: 25px;
+}
+
+audio{
+ 	display: none;
+}
+
+p{
+	font-size: 10px;
+}
+
+span p{
+	font-size: 10px;
+}
+
+footer.footer {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+}
+
+.tituloJuego {
+  font-size: 2.5em;
+  margin-top: 0.5%;
+  text-align: center;
+  font-weight: 700;
+  font-family: 'Montserrat Alternates', sans-serif;
+  color: #fff;
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.partida{
+	margin-top: 10%;
+}
+
+.card-body{
+	font-size: 10px;
+	color: white;
+	background-color: #015988;
+}
