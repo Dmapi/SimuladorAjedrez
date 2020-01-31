@@ -97,7 +97,7 @@ function randomPositions(pieces,squares) { //place pieces with random squares an
     
     //place bishops of same color on opposite colored tiles
     var numWBishops = getOccurrence(pieces, 'wB') 
-    var numBBishops = getOccurrence(piees, 'bB') 
+    var numBBishops = getOccurrence(pieces, 'bB') 
     var squareIndex = Math.floor(Math.random() * squares.length)
 
     //assign wB to tiles alternating light and dark
@@ -143,7 +143,7 @@ function randomPositions(pieces,squares) { //place pieces with random squares an
     }
     
     //place remaining non-bishop pieces
-    for (i = 0; i < pieces.length; i++) {
+    while (pieces.length != 0) {
         console.log(pieces)
         // find random piece and square by index
         var pieceIndex = Math.floor(Math.random() * pieces.length)
@@ -228,4 +228,51 @@ function diagonal(){ // to check if all pieces on different diagonals
     else{
         return false
     }
+}
+
+//check bishops
+function legalBishopMoves (source, target) {
+    /*more complete legal moves - needs fix
+    
+    var board = {
+        'a':1,
+        'b':2,
+        'c':3,
+        'd':4,
+        'e':5,
+        'f':6,
+        'g':7,
+        'h':8
+
+    };
+
+    var startX = board[source[0]];
+    var startY = parseInt(bishop[1]);
+
+    var endX= board[target[0]];
+    var endY = parseInt(bishop[1]);
+
+    if (startX + startY === endX + endY || startX + endY === startY + endX) {
+        return true 
+    }
+    else {
+        return false
+    }
+*/
+    //legal moves based on square color
+    possibleSquares = create_squares()
+    sourceIndex = possibleSquares.findIndex(x => x.square === source);
+    targetIndex = possibleSquares.findIndex(x => x.square === target);
+
+    sourceColor = possibleSquares[sourceIndex].color
+    targetColor = possibleSquares[targetIndex].color
+
+    if (sourceColor != targetColor) {
+        return false
+    }
+    
+    else {
+        return true
+    }
+    //
 }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chess Example</title>
+	<link rel="stylesheet"
+      href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+      <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+      <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+      <script src="./js/helper_functions.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js" integrity="sha384-s3XgLpvmHyscVpijnseAmye819Ee3yaGa8NxstkJVyA6nuDFjt59u1QvuEl/mecz" crossorigin="anonymous"></script>
+      
+
+</head>
+<body>
+
+<h1>Ejercicio: 10 Alfiles</h1>
+
+<p>Objetivo: Mejorar el pensamiento lógico-espacial con relación a las condiciones que implica la aplicación de los conocimientos previos en escenarios que tienen una delimitación, implicando una autogestión y el esmero de la atención-reflexión, con tal de fabricar nuevos esquemas cognitivos dentro de los pensamientos del individuo.</p>
+<p>
+    Instrucciones: usando solo los movimientos del alfil, acomoda las piezas para que apartir de ello controlen todas las casillas del tablero.
+</p>
+<!-- Dentro de este div se generará el ajedrez-->
+
+<!-- Alfiles 10-->
+<div id="myBoard" style="width: 400px"></div>
+
+		<!-- Aquí va el código de JS o en un archivo externo, como tú quieras-->
+        <script type="text/javascript">
+
+var board = null
+var game = new Chess()
+
+function onDrop (source, target) {
+    if (legalBishopMoves(source, target) === false) {
+        return 'snapback'
+    }
+
+
+}
+
+function onDragStart(source, piece, position, orientation) {
+    var solns = ['8/3BB3/8/2B2B2/2B2B2/2B2B2/3BB3/8', '8/3BB3/2B2B2/2B2B2/2B2B2/8/3BB3/8',
+          '8/8/3BBB2/1B4B1/1B4B1/3BBB2/8/8', '8/8/2BBB3/1B4B1/1B4B1/2BBB3/8/8']; // 4 solns
+    
+    if (solns.includes(board.fen())) {
+        alert('Lo solucionaste!')
+        return false
+    }
+}
+        
+       	// Generas las posiciones de las piezas que te interesan en la variable position
+            var pieces = ['wB','wB','wB','wB','wB','wB','wB','wB','wB','wB'];
+            var squares = create_squares();
+            var alfiles10Start = randomPositions(pieces, squares);
+
+            // Así se inicializa el juego, aquí van todas las funciones que hayas realizado
+            // El primer parámetro es el elemento HTML donde inicializarás el tablero (myBoard)
+            // El segundo parámetro es la variable que contiene las posiciones de las piezas
+            var config = {
+                draggable: true,
+                position: alfiles10Start,
+                onDrop: onDrop,
+                onDragStart: onDragStart
+                }
+
+                board = Chessboard('myBoard', config)
+
+        </script>
+</body>
+</html>
