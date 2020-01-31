@@ -232,8 +232,8 @@ function diagonal(){ // to check if all pieces on different diagonals
 
 //check bishops
 function legalBishopMoves (source, target) {
-    /*more complete legal moves - needs fix
-    
+    //more complete legal moves - needs fix
+
     var board = {
         'a':1,
         'b':2,
@@ -247,10 +247,10 @@ function legalBishopMoves (source, target) {
     };
 
     var startX = board[source[0]];
-    var startY = parseInt(bishop[1]);
+    var startY = parseInt(source[1]);
 
     var endX= board[target[0]];
-    var endY = parseInt(bishop[1]);
+    var endY = parseInt(target[1]);
 
     if (startX + startY === endX + endY || startX + endY === startY + endX) {
         return true 
@@ -258,7 +258,10 @@ function legalBishopMoves (source, target) {
     else {
         return false
     }
-*/
+
+
+
+/*
     //legal moves based on square color
     possibleSquares = create_squares()
     sourceIndex = possibleSquares.findIndex(x => x.square === source);
@@ -273,6 +276,8 @@ function legalBishopMoves (source, target) {
     
     else {
         return true
-    }
+    }*/
     //
 }
+
+console.log(legalBishopMoves('d5','e6'))
