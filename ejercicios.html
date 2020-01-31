@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Ejercicios</title>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat+Alternates:700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css'>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+<!-- partial:index.partial.html -->
+<nav role='navigation' id="mainnav">
+  <ul>
+    <li><a href="./index.html">Home</a></li>
+    <li><a href="./perfil.html">Perfil</a></li>
+    <li><a href="./jvsj.html">Jugador vs Jugador</a></li>
+    <li><a href="./jvsPC.html">Jugador vs PC</a></li>
+    <li><a href="./equipo.html">Equipo de Desarrollo</a></li>
+    <li><a href="#?">Salir</a></li>
+  </ul>
+</nav>
+
+<div class="hamb">
+  <a href="#"><i class="fa fa-bars"></i></a>
+</div>
+
+<div class="hero">
+    <div class="heading">
+        <center><br> Ejercicios </center>
+    </div>
+
+    <div class="listE">
+           <center><button id="myButtonE1" class="button" type="submit">Ejercicio 1</button>
+           <button id="myButtonE3" class="button" type="submit">Ejercicio 2</button>
+           <button id="myButtonE2" class="button" type="submit">Ejercicio 3</button>
+           <button id="myButtonE2" class="button" type="submit">Ejercicio 4</button>
+           <button id="myButtonE2" class="button" type="submit">Ejercicio 5</button>
+           <button id="myButtonE2" class="button" type="submit">Ejercicio 6</button>
+            </center>
+    </div>
+</div>
+
+
+
+  <!-- iniciar  -->
+
+<canvas id="bubble"></canvas>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://code.jquery.com/ui/1.10.3/jquery-ui.js'></script><script  src="./script.js"></script>
+
+<script type="text/javascript">
+    document.getElementById("myButtonE1").onclick = function () {
+        location.href = "./perfil.html";
+    };
+  </script>
+
+<script type="text/javascript">
+    document.getElementById("myButtonE2").onclick = function () {
+        location.href = "./jvsPC.html";
+    };
+  </script>
+
+<script type="text/javascript">
+    document.getElementById("myButtonE3").onclick = function () {
+        location.href = "./ejercicios.html";
+    };
+  </script>
+
+</body>
+</html>
